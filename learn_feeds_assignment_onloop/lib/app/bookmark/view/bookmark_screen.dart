@@ -18,7 +18,10 @@ class BookmarkScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const OLAppBar(title: "Saved for later"),
+      appBar: const OLAppBar(
+        title: "Saved for later",
+        isBackButtonRequired: true,
+      ),
       body: BlocBuilder<BookmarkBloc, BookmarkState>(
         builder: (BuildContext context, BookmarkState state) {
           return state.bookmarks.isNotEmpty

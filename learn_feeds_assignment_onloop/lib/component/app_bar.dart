@@ -7,8 +7,14 @@ import '../utils/font_family_utils.dart';
 class OLAppBar extends StatefulWidget implements PreferredSizeWidget {
   ///
   final String title;
-
-  const OLAppBar({Key? key, required this.title}) : super(key: key);
+  final bool isBookMarkRequired;
+  final bool isBackButtonRequired;
+  const OLAppBar(
+      {Key? key,
+      required this.title,
+      this.isBookMarkRequired = false,
+      this.isBackButtonRequired = false})
+      : super(key: key);
 
   static final _appBar = AppBar();
   @override
@@ -35,32 +41,40 @@ class _AppBarState extends State<OLAppBar> {
       ),
       backgroundColor: kWhiteColor,
       elevation: 0.5,
-      leading: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Image.asset(
-          'assets/images/x-button.png',
-          height: 20.0,
-          width: 20.0,
-        ),
-      ),
-      automaticallyImplyLeading: true,
+      // leadingWidth: 20.0,
+      // leading: IconButton(
+      //   icon: const Icon(Icons.close),
+      //   color: Colors.black38,
+      //   // onPressed: () => Navigator.of(context).pop(),
+      // ),
+      // automaticallyImplyLeading: true,
+      leading: widget.isBackButtonRequired
+          ? CloseButton(
+              onPressed: () => Navigator.of(context).pop(),
+              color: Colors.blueGrey,
+            )
+          : Container(),
+      automaticallyImplyLeading: false,
       actions: [
-        InkWell(
-          onTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => const BookmarkScreen()),
-            );
-          },
-          child: Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Image.asset(
-              'assets/images/save_white_icon.png',
-              height: 20.0,
-              width: 20.0,
-            ),
-          ),
-        )
+        widget.isBookMarkRequired
+            ? InkWell(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const BookmarkScreen()),
+                  );
+                },
+                child: Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Image.asset(
+                    'assets/images/save_white_icon.png',
+                    height: 20.0,
+                    width: 20.0,
+                  ),
+                ),
+              )
+            : Container()
       ],
     );
   }

@@ -19,7 +19,10 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const OLAppBar(title: "Learn"),
+      appBar: const OLAppBar(
+        title: "Learn",
+        isBookMarkRequired: true,
+      ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
