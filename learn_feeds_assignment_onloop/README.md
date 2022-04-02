@@ -24,5 +24,5 @@ This application features are
 1. Task 1 - Completed
 2. Task 2 - Completed
 3. Task 3 - Completed
-4. Task 4[Bonus featuregit ] - Completed
+4. Task 4[Bonus feature] - Completed
 
