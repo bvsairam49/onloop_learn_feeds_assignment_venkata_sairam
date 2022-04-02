@@ -36,10 +36,14 @@ class FeedBloc extends Bloc<FeedEvent, FeedState> {
   void _onFilterRequested(FilterFeed event, Emitter emit) {
     final List<LearnContent> filteredContent = [];
 
-    for (final c in content) {
-      for (final tag in c.tags) {
-        if (tag.name == event.filterText) {
-          filteredContent.add(c);
+    if (event.filterText.isEmpty) {
+      filteredContent.addAll(content);
+    } else {
+      for (final c in content) {
+        for (final tag in c.tags) {
+          if (tag.name == event.filterText) {
+            filteredContent.add(c);
+          }
         }
       }
     }

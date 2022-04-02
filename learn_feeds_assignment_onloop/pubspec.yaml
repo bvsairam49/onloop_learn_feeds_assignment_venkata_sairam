@@ -30,6 +30,7 @@ dependencies:
   shared_preferences: ^2.0.8
 
 # Other
+  google_fonts: ^2.3.1
   equatable: ^2.0.3
   flutter_webview_plugin: ^0.4.0
 

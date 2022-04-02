@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 
-import '../app/bookmark/view/bookmark_screen.dart';
+import '../app/my_collection/view/my_collection_screen.dart';
 import '../utils/color_constants.dart';
 import '../utils/font_family_utils.dart';
 
-class OLAppBar extends StatefulWidget implements PreferredSizeWidget {
+class OlAppBar extends StatefulWidget implements PreferredSizeWidget {
   ///
   final String title;
   final bool isBookMarkRequired;
   final bool isBackButtonRequired;
-  const OLAppBar(
+  const OlAppBar(
       {Key? key,
       required this.title,
       this.isBookMarkRequired = false,
@@ -24,7 +24,7 @@ class OLAppBar extends StatefulWidget implements PreferredSizeWidget {
   _AppBarState createState() => _AppBarState();
 }
 
-class _AppBarState extends State<OLAppBar> {
+class _AppBarState extends State<OlAppBar> {
   @override
   Widget build(BuildContext context) {
     return AppBar(
@@ -41,13 +41,6 @@ class _AppBarState extends State<OLAppBar> {
       ),
       backgroundColor: kWhiteColor,
       elevation: 0.5,
-      // leadingWidth: 20.0,
-      // leading: IconButton(
-      //   icon: const Icon(Icons.close),
-      //   color: Colors.black38,
-      //   // onPressed: () => Navigator.of(context).pop(),
-      // ),
-      // automaticallyImplyLeading: true,
       leading: widget.isBackButtonRequired
           ? CloseButton(
               onPressed: () => Navigator.of(context).pop(),
@@ -62,7 +55,7 @@ class _AppBarState extends State<OLAppBar> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => const BookmarkScreen()),
+                        builder: (context) => const MyCollectionScreen()),
                   );
                 },
                 child: Padding(

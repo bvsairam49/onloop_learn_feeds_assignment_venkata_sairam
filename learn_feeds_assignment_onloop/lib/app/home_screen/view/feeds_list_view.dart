@@ -8,10 +8,10 @@ import '../../../utils/color_constants.dart';
 import '../../../utils/color_utils.dart';
 import '../../../utils/decoration_utils.dart';
 import '../../../utils/font_family_utils.dart';
-import '../../bookmark/bloc/bookmark_bloc.dart';
-import '../../bookmark/bloc/bookmark_event.dart';
-import '../../bookmark/bloc/bookmark_state.dart';
-import '../../bookmark/model/bookmark_model.dart';
+import '../../my_collection/bloc/my_collection_bloc.dart';
+import '../../my_collection/bloc/my_collection_event.dart';
+import '../../my_collection/bloc/my_collection_state.dart';
+import '../../my_collection/model/my_collection_model.dart';
 import '../bloc/feed/feed_bloc.dart';
 import '../bloc/feed/feed_event.dart';
 import '../bloc/feed/feed_state.dart';
@@ -38,6 +38,8 @@ class _FeedsListViewState extends State<FeedsListView> {
         if (state is FeedLoaded && state.content != null) {
           return state.content!.isNotEmpty
               ? ListView.builder(
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
                   itemCount: state.content?.length ?? 0,
                   itemBuilder: (context, index) {
                     return InkWell(
@@ -187,9 +189,11 @@ class _FeedsListViewState extends State<FeedsListView> {
                                 Container(
                                   decoration: boxDecoration(
                                     getFillColor(
-                                        state.content![index].tags[0].color),
+                                            state.content![index].tags[0].color)
+                                        .withOpacity(0.7),
                                     getBorderColor(
-                                        state.content![index].tags[0].color),
+                                            state.content![index].tags[0].color)
+                                        .withOpacity(0.3),
                                   ),
                                   padding: const EdgeInsets.symmetric(
                                       horizontal: 10),
@@ -199,7 +203,7 @@ class _FeedsListViewState extends State<FeedsListView> {
                                     style: TextStyle(
                                       fontSize: 14.0,
                                       fontFamily: arvo,
-                                      fontWeight: FontWeight.bold,
+                                      fontWeight: FontWeight.normal,
                                       color: getBorderColor(
                                           state.content![index].tags[0].color),
                                     ),
@@ -230,8 +234,16 @@ class _FeedsListViewState extends State<FeedsListView> {
                     );
                   },
                 )
-              : const Center(
-                  child: Text('No Matches Found.'),
+              : Container(
+                  margin:
+                      const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+                  padding: const EdgeInsets.all(10.0),
+                  child: const Center(
+                    child: Text(
+                      'No Matches Found.',
+                      style: TextStyle(fontSize: 20.0),
+                    ),
+                  ),
                 );
         } else {
           return const Center(child: CircularProgressIndicator());
@@ -241,39 +253,40 @@ class _FeedsListViewState extends State<FeedsListView> {
   }
 
   Widget _bookmarkItem(LearnContent content) {
-    return BlocBuilder<BookmarkBloc, BookmarkState>(
+    return BlocBuilder<MyCollectionBloc, MyCollectionState>(
       builder: (context, state) {
         return InkWell(
           onTap: () {
-            state.bookmarks.any((e) => e.content.title == content.title)
-                ? context.read<BookmarkBloc>().add(
-                      ToggleBookmarkOff(
-                        bookmark: BookmarkModel(
+            state.myCollections.any((e) => e.content.title == content.title)
+                ? context.read<MyCollectionBloc>().add(
+                      ToggleMyCollectionOff(
+                        myCollectionModel: MyCollectionModel(
                           content: content,
                           isBookmarked: true,
                         ),
                       ),
                     )
-                : context.read<BookmarkBloc>().add(
-                      ToggleBookmarkOn(
-                        bookmark: BookmarkModel(
+                : context.read<MyCollectionBloc>().add(
+                      ToggleMyCollectionOn(
+                        myCollectionModel: MyCollectionModel(
                           content: content,
                           isBookmarked: true,
                         ),
                       ),
                     );
           },
-          child: state.bookmarks.any((e) => e.content.title == content.title)
-              ? Image.asset(
-                  'assets/images/save_grey_icon.png',
-                  height: 20,
-                  width: 20,
-                )
-              : Image.asset(
-                  'assets/images/save_white_icon.png',
-                  height: 20,
-                  width: 20,
-                ),
+          child:
+              state.myCollections.any((e) => e.content.title == content.title)
+                  ? Image.asset(
+                      'assets/images/save_grey_icon.png',
+                      height: 20,
+                      width: 20,
+                    )
+                  : Image.asset(
+                      'assets/images/save_white_icon.png',
+                      height: 20,
+                      width: 20,
+                    ),
         );
       },
     );

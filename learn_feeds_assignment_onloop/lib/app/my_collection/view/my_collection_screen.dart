@@ -4,27 +4,27 @@ import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
 import 'package:intl/intl.dart';
 import 'package:learn_feeds_assignment_onloop/utils/string_extentions.dart';
 
-import '../../../component/app_bar.dart';
+import '../../../component/ol_app_bar.dart';
 import '../../../utils/color_constants.dart';
 import '../../../utils/color_utils.dart';
 import '../../../utils/decoration_utils.dart';
 import '../../../utils/font_family_utils.dart';
-import '../bloc/bookmark_bloc.dart';
-import '../bloc/bookmark_state.dart';
+import '../bloc/my_collection_bloc.dart';
+import '../bloc/my_collection_state.dart';
 
-class BookmarkScreen extends StatelessWidget {
-  const BookmarkScreen({Key? key}) : super(key: key);
+class MyCollectionScreen extends StatelessWidget {
+  const MyCollectionScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const OLAppBar(
+      appBar: const OlAppBar(
         title: "Saved for later",
         isBackButtonRequired: true,
       ),
-      body: BlocBuilder<BookmarkBloc, BookmarkState>(
-        builder: (BuildContext context, BookmarkState state) {
-          return state.bookmarks.isNotEmpty
+      body: BlocBuilder<MyCollectionBloc, MyCollectionState>(
+        builder: (BuildContext context, MyCollectionState state) {
+          return state.myCollections.isNotEmpty
               ? ListView.builder(
                   itemBuilder: (context, index) {
                     return InkWell(
@@ -33,15 +33,16 @@ class BookmarkScreen extends StatelessWidget {
                           context,
                           MaterialPageRoute(
                               builder: (context) => WebviewScaffold(
-                                    url: state
-                                        .bookmarks[index].content.contentUrl,
+                                    url: state.myCollections[index].content
+                                        .contentUrl,
                                     appBar: AppBar(
                                       iconTheme: const IconThemeData(
                                           color: kTextMediumGrey),
                                       backgroundColor: kWhiteColor,
                                       title: Center(
                                         child: Text(
-                                          state.bookmarks[index].content.title,
+                                          state.myCollections[index].content
+                                              .title,
                                           style: const TextStyle(
                                             fontSize: 22.0,
                                             fontFamily: arvo,
@@ -70,7 +71,8 @@ class BookmarkScreen extends StatelessWidget {
                                 ClipRRect(
                                   borderRadius: BorderRadius.circular(8.0),
                                   child: Image.network(
-                                    state.bookmarks[index].content.thumbnailUrl,
+                                    state.myCollections[index].content
+                                        .thumbnailUrl,
                                     width: 80.0,
                                     height: 80.0,
                                     fit: BoxFit.cover,
@@ -99,7 +101,8 @@ class BookmarkScreen extends StatelessWidget {
                                                 Center(
                                                   child: Text(
                                                     state
-                                                            .bookmarks[index]
+                                                            .myCollections[
+                                                                index]
                                                             .content
                                                             .type
                                                             .toTitleCase +
@@ -108,7 +111,7 @@ class BookmarkScreen extends StatelessWidget {
                                                                 'MMM d, yyyy')
                                                             .format(DateTime
                                                                 .parse(state
-                                                                    .bookmarks[
+                                                                    .myCollections[
                                                                         index]
                                                                     .content
                                                                     .createdAt)),
@@ -135,7 +138,8 @@ class BookmarkScreen extends StatelessWidget {
                                           ],
                                         ),
                                         Text(
-                                          state.bookmarks[index].content.title,
+                                          state.myCollections[index].content
+                                              .title,
                                           maxLines: 1,
                                           overflow: TextOverflow.ellipsis,
                                           softWrap: true,
@@ -147,7 +151,7 @@ class BookmarkScreen extends StatelessWidget {
                                           ),
                                         ),
                                         Text(
-                                          state.bookmarks[index].content
+                                          state.myCollections[index].content
                                               .description,
                                           maxLines: 2,
                                           overflow: TextOverflow.ellipsis,
@@ -181,22 +185,23 @@ class BookmarkScreen extends StatelessWidget {
                               children: [
                                 Container(
                                   decoration: boxDecoration(
-                                    getFillColor(state.bookmarks[index].content
-                                        .tags[0].color),
-                                    getBorderColor(state.bookmarks[index]
+                                    getFillColor(state.myCollections[index]
+                                        .content.tags[0].color),
+                                    getBorderColor(state.myCollections[index]
                                         .content.tags[0].color),
                                   ),
                                   padding: const EdgeInsets.symmetric(
                                       horizontal: 10),
                                   child: Text(
-                                    state.bookmarks[index].content.tags[0].name,
+                                    state.myCollections[index].content.tags[0]
+                                        .name,
                                     textAlign: TextAlign.center,
                                     style: TextStyle(
                                       fontSize: 14.0,
                                       fontFamily: arvo,
                                       fontWeight: FontWeight.bold,
                                       color: getBorderColor(state
-                                          .bookmarks[index]
+                                          .myCollections[index]
                                           .content
                                           .tags[0]
                                           .color),
@@ -227,9 +232,14 @@ class BookmarkScreen extends StatelessWidget {
                       ),
                     );
                   },
-                  itemCount: state.bookmarks.length,
+                  itemCount: state.myCollections.length,
                 )
-              : const Center(child: Text('No Bookmarks'));
+              : const Center(
+                  child: Text(
+                    'No Bookmarks',
+                    style: TextStyle(fontSize: 20.0),
+                  ),
+                );
         },
       ),
     );

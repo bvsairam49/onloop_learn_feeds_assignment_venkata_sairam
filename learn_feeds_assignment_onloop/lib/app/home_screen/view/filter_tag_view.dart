@@ -29,14 +29,18 @@ class _FilterWrapState extends State<FilterTagView> {
     return BlocBuilder<FilterBloc, FilterState>(
       builder: (BuildContext context, FilterState state) {
         if (state is FilterLoaded) {
-          List<FilterChipData> filterData = List.generate(
+          List<FilterChipData> filterData = [
+            FilterChipData(name: "All", color: "njnkj")
+          ];
+
+          filterData.addAll(List.generate(
             state.filter.tags.length,
             (index) {
               return FilterChipData(
                   name: state.filter.tags[index].name,
                   color: state.filter.tags[index].color);
             },
-          );
+          ));
 
           return Wrap(
             children: List.generate(
@@ -44,16 +48,18 @@ class _FilterWrapState extends State<FilterTagView> {
               (index) {
                 return InkWell(
                   onTap: () {
-                    context
-                        .read<FeedBloc>()
-                        .add(FilterFeed(filterText: filterData[index].name));
+                    context.read<FeedBloc>().add(FilterFeed(
+                        filterText: filterData[index].name == 'All'
+                            ? ''
+                            : filterData[index].name));
                   },
                   child: Container(
                       margin: const EdgeInsets.symmetric(
                           horizontal: 5, vertical: 3),
                       decoration: boxDecoration(
-                        getFillColor(filterData[index].color),
-                        getBorderColor(filterData[index].color),
+                        getFillColor(filterData[index].color).withOpacity(0.5),
+                        getBorderColor(filterData[index].color)
+                            .withOpacity(0.3),
                       ),
                       padding: const EdgeInsets.symmetric(horizontal: 8.0),
                       child: Text(
@@ -61,7 +67,7 @@ class _FilterWrapState extends State<FilterTagView> {
                         style: TextStyle(
                           fontSize: 14.0,
                           fontFamily: arvo,
-                          fontWeight: FontWeight.bold,
+                          fontWeight: FontWeight.normal,
                           color: getBorderColor(filterData[index].color),
                         ),
                       )),

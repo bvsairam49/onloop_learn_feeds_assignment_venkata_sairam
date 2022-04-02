@@ -2,8 +2,8 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:learn_feeds_assignment_onloop/app/home_screen/model/learn_feed_model.dart';
 
+import '../app/config.dart';
 import '../app/home_screen/model/filter_model.dart';
-import 'config.dart';
 
 class ApiService {
   /// The dio provider.
